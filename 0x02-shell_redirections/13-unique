@@ -1,2 +1,2 @@
 #!/bin/bash
-cat | tr '[:upper:]' '[:lower:]' | tr -s ' ' '\n' | sort | uniq -u
+readarray -t words; printf '%s\n' "${words[@]}" | sort | uniq -u
