@@ -1,2 +1,2 @@
 #!/bin/bash
-find . -type d -empty -printf '%P\n' -o -type f -empty -printf '%P\n' -o -false ; echo
+readarray -t words; printf '%s\n' "${words[@]}" | awk '{a[$0]++} END {for (i in a) if (a[i]==1) print i}' | sort
