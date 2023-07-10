@@ -1,2 +1,2 @@
 #!/bin/bash
-readarray -t words; printf '%s\n' "${words[@]}" | awk '{a[$0]++} END {for (i in a) if (a[i]==1) print i}' | sort
+find . -empty -exec sh -c 'basename "$0"' {} \; 2>/dev/null
