@@ -1,17 +1,27 @@
 #!/usr/bin/python3
+"""This script will return the number of subscribers associated with
+a subreddit
 """
-HAs the number of subscribers function
-"""
-
 import requests
+from sys import argv
 
 
 def number_of_subscribers(subreddit):
-    """returns the number of subscribers for a given subreddit"""
-    if subreddit is None or type(subreddit) is not str:
+    """Method get the number of users subscribed to a subreddit
+
+    subreddit (Str)- subreddit to check
+
+    Returns - number of users (INT) else 0 (INT) if not subreddit is found
+    """
+    try:
+        h = {'user-agent': 'Mozilla/5.0', 'allow_redirects': 'false'}
+        url = "https://www.reddit.com/r/{}/about.json".format(subreddit)
+        req = requests.get(url, headers=h)
+        return req.json().get('data').get('subscribers', 0)
+    except Exception as e:
         return 0
-    r = requests.get('http://www.reddit.com/r/{}/about.json'.format(subreddit),
-                     headers={'User-Agent': '0x16-api_advanced:project:\
-v1.0.0 (by /u/firdaus_cartoon_jr)'}).json()
-    subs = r.get("data", {}).get("subscribers", 0)
-    return subs
+
+
+if __name__ == "__main__":
+    pass
+

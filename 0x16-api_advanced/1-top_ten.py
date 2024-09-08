@@ -1,23 +1,32 @@
 #!/usr/bin/python3
-
-"""Contains top_ten function"""
+"""This script will return the number of subscribers associated with
+a subreddit
+"""
+import json
 import requests
+from sys import argv
 
 
 def top_ten(subreddit):
-    """Print the titles of the 10 hottest posts on a given subreddit."""
-    url = "https://www.reddit.com/r/{}/hot/.json".format(subreddit)
-    headers = {
-        "User-Agent": "0x16-api_advanced:project:\
-v1.0.0 (by /u/firdaus_cartoon_jr)"
-    }
-    params = {
-        "limit": 10
-    }
-    response = requests.get(url, headers=headers, params=params,
-                            allow_redirects=False)
-    if response.status_code == 404:
-        print("None")
-        return
-    results = response.json().get("data")
-    [print(c.get("data").get("title")) for c in results.get("children")]
+    """Method get the number of users subscribed to a subreddit
+
+    subreddit (Str)- subreddit to check
+
+    Returns - number of users (INT) else 0 (INT) if not subreddit is found
+    """
+    try:
+        h = {'user-agent': 'Mozilla/5.0', 'allow_redirects': 'false'}
+        p = {'limit': 10}
+        url = "https://www.reddit.com/r/{}/hot.json".format(subreddit)
+        req = requests.get(url, headers=h, params=p).json().get('data')
+
+        for post in req.get('children'):
+            print(post.get('data', None).get('title', None))
+
+    except Exception as e:
+        print(None)
+
+
+if __name__ == "__main__":
+    pass
+
