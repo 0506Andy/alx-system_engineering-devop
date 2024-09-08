@@ -1,33 +1,24 @@
 #!/usr/bin/python3
-
-"""This script will return the number of subscribers associated with
-a subreddit
-"""
-import json
-import requests
-from sys import argv
+"""function that queries the Reddit API and prints the titles
+of the first 10 hot posts listed for a given subreddit."""
 
 
 def top_ten(subreddit):
-    """Method get the number of users subscribed to a subreddit
+    """function that queries the Reddit API and prints the titles
+    of the first 10 hot posts listed for a given subreddit."""
+    import requests
+    import sys
 
-    subreddit (Str)- subreddit to check
-
-    Returns - number of users (INT) else 0 (INT) if not subreddit is found
-    """
+    url = "https://www.reddit.com/r/{}/hot.json".format(subreddit)
+    headers = {'User-Agent': 'Mozilla/5.0'}
     try:
-        h = {'user-agent': 'Mozilla/5.0', 'allow_redirects': 'false'}
-        p = {'limit': 10}
-        url = "https://www.reddit.com/r/{}/hot.json".format(subreddit)
-        req = requests.get(url, headers=h, params=p).json().get('data')
-
-        for post in req.get('children'):
-            print(post.get('data', None).get('title', None))
-
-    except Exception as e:
-        print(None)
-
-
-if __name__ == "__main__":
-    pass
-
+        response = requests.get(url, headers=headers,
+                                allow_redirects=False)
+        if response.status_code == 200:
+            children = response.json().get('data').get('children')
+            for i in range(10):
+                print(children[i].get('data').get('title'))
+        else:
+            print("None")
+    except Exception:
+        print("None")
