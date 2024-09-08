@@ -1,19 +1,17 @@
 #!/usr/bin/python3
+"""
+HAs the number of subscribers function
+"""
 
 import requests
 
+
 def number_of_subscribers(subreddit):
-    """
-    Queries the Reddit API and returns the number of subscribers for a given subreddit.
-    If the subreddit is invalid, returns 0.
-    """
-    base_url = "https://www.reddit.com/r/"
-    headers = {"User-Agent": "MyMagicalBot v1.0"}  # Set a custom User-Agent to avoid trouble with Too Many Requests
-
-    try:
-        response = requests.get(f"{base_url}{subreddit}/about.json", headers=headers)
-        data = response.json()
-        return data["data"]["subscribers"]
-    except (requests.RequestException, KeyError):
+    """returns the number of subscribers for a given subreddit"""
+    if subreddit is None or type(subreddit) is not str:
         return 0
-
+    r = requests.get('http://www.reddit.com/r/{}/about.json'.format(subreddit),
+                     headers={'User-Agent': '0x16-api_advanced:project:\
+v1.0.0 (by /u/firdaus_cartoon_jr)'}).json()
+    subs = r.get("data", {}).get("subscribers", 0)
+    return subs
